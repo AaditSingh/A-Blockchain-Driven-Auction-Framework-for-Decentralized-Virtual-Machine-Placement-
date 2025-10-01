@@ -69,12 +69,9 @@ public class TokenAuctionBroker extends DatacenterBroker {
         return winningHost;
     }
 
-    /**
-     * ADDED: This overridden method prevents the broker from destroying VMs,
-     * so we can read the final host utilization for our energy calculation.
-     */
     @Override
     protected void clearDatacenters() {
         // Intentionally left empty
     }
+
 }
