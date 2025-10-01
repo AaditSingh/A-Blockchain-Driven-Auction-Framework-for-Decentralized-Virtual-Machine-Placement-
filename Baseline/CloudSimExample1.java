@@ -11,22 +11,18 @@ import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;
 
-/**
- * Baseline Simulation with a SIMPLE, CUSTOM energy calculation.
- * This version does NOT require any new imports from the power package.
- */
 public class CloudSimExample1 {
 
     private static List<Cloudlet> cloudletList;
     private static List<Vm> vmlist;
-    private static List<Host> hostList; // Made this a class variable to access it later
+    private static List<Host> hostList; 
 
     // --- Simulation Parameters ---
     private static final int NUM_HOSTS = 2;
     private static final int NUM_VMS = 5;
     private static final int NUM_CLOUDLETS = 10;
 
-    // --- ADDED: Simple Power Model Constants (in Watts) ---
+    //  Simple Power Model Constants (in Watts)
     private static final double HOST_POWER_IDLE = 100; // Power consumed when idle
     private static final double HOST_POWER_FULL = 200; // Power consumed at 100% CPU utilization
 
@@ -51,14 +47,12 @@ public class CloudSimExample1 {
 
             double lastClock = CloudSim.startSimulation();
             
-            // --- THIS IS THE FIX ---
-            // We get the results and calculate energy immediately after the simulation runs,
-            // but BEFORE we stop it and shut everything down.
+            
             List<Cloudlet> newList = broker.getCloudletReceivedList();
             Log.printLine("Simulation is over!");
             
             printCloudletList(newList);
-            calculateAndPrintEnergy(hostList, lastClock); // Moved this line here
+            calculateAndPrintEnergy(hostList, lastClock); 
 
             CloudSim.stopSimulation();
 
@@ -71,9 +65,7 @@ public class CloudSimExample1 {
 
     private static DatacenterBroker createBroker() {
         DatacenterBroker broker = null;
-        try {
-            // --- THIS IS THE ONLY CHANGE ---
-            // Use your new NonDestroyingBroker instead of the default one
+        try {            
             broker = new NonDestroyingBroker("Broker");
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,13 +93,12 @@ public class CloudSimExample1 {
             new Host(1, new RamProvisionerSimple(4096), new BwProvisionerSimple(5000), 500000, peList2, new VmSchedulerTimeShared(peList2))
         );
 
-        // ... the rest of the method remains the same
+        
         DatacenterCharacteristics characteristics = new DatacenterCharacteristics(
                 "x86", "Linux", "Xen", hostList, 10.0, 3.0, 0.05, 0.001, 0.0);
 
         Datacenter datacenter = null;
         try {
-            // Make sure to use the correct allocation policy for each simulation file
             datacenter = new Datacenter(name, characteristics, new VmAllocationPolicySimple(hostList), new LinkedList<Storage>(), 0);
         } catch (Exception e) {
             e.printStackTrace();
@@ -115,7 +106,6 @@ public class CloudSimExample1 {
         return datacenter;
     }
 
-    // --- ADDED: NEW CUSTOM ENERGY CALCULATION METHOD ---
     private static void calculateAndPrintEnergy(List<Host> hostList, double simulationTime) {
         double totalEnergyKWh = 0;
         for (Host host : hostList) {
@@ -135,7 +125,7 @@ public class CloudSimExample1 {
         Log.printLine(String.format("Total Energy Consumption for all hosts: %.4f kWh", totalEnergyKWh));
     }
 
-    // (createVmList and printCloudletList methods are unchanged)
+   
     private static List<Vm> createVmList(int brokerId) {
          vmlist = new ArrayList<Vm>();
          for(int i=0;i<NUM_VMS;i++){
@@ -157,7 +147,7 @@ public class CloudSimExample1 {
     }
 
     private static void printCloudletList(List<Cloudlet> list) {
-        // (This method is unchanged)
+       
         String indent = "    ";
         Log.printLine();
         Log.printLine("========== OUTPUT ==========");
