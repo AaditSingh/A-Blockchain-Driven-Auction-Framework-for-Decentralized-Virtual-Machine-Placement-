@@ -12,7 +12,6 @@ public class BasicAuctionBroker extends DatacenterBroker {
         super(name);
     }
 
-    // This method is the same as before, with the tie-breaking fix
     public void placeVmsUsingAuction(List<Host> hostList) {
          for (Object vmObject : this.vmList) {
             if (vmObject instanceof Vm) {
@@ -41,12 +40,12 @@ public class BasicAuctionBroker extends DatacenterBroker {
         }
     }
 
-    /**
-     * ADDED: This overridden method prevents the broker from destroying VMs,
-     * so we can read the final host utilization for our energy calculation.
+    /*
+     This overridden method prevents the broker from destroying VMs, so we can read the final host utilization for our energy calculation.
      */
     @Override
     protected void clearDatacenters() {
         // Intentionally left empty
     }
+
 }
