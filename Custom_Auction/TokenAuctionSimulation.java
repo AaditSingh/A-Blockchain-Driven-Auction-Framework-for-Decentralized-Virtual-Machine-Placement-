@@ -46,8 +46,7 @@ public class TokenAuctionSimulation {
 
             List<Cloudlet> newList = broker.getCloudletReceivedList();
             printCloudletList(newList);
-
-            // ADDED: Call to our custom energy calculation method
+           
             calculateAndPrintEnergy(hostList, lastClock);
 
             CloudSim.stopSimulation();
@@ -87,7 +86,7 @@ public class TokenAuctionSimulation {
         return datacenter;
     }
     
-    // ADDED: NEW CUSTOM ENERGY CALCULATION METHOD
+    
     private static void calculateAndPrintEnergy(List<Host> hostList, double simulationTime) {
         double totalEnergyKWh = 0;
         for (Host host : hostList) {
@@ -102,7 +101,6 @@ public class TokenAuctionSimulation {
         Log.printLine(String.format("Total Energy Consumption for all hosts: %.4f kWh", totalEnergyKWh));
     }
 
-    // (createVmList, createCloudletList, and printCloudletList are the same as before)
     private static List<Vm> createVmList(int brokerId) {
         List<Vm> list = new ArrayList<>();
         for (int i = 0; i < NUM_VMS; i++) {
@@ -136,4 +134,5 @@ public class TokenAuctionSimulation {
             }
         }
     }
+
 }
