@@ -18,13 +18,12 @@ public class HeuristicSimulation {
     
     private static List<Cloudlet> cloudletList;
     private static List<Vm> vmlist;
-    private static List<Host> hostList; // Made this a class variable
+    private static List<Host> hostList; 
 
     private static final int NUM_HOSTS = 2;
     private static final int NUM_VMS = 5;
     private static final int NUM_CLOUDLETS = 10;
 
-    // ADDED: Simple Power Model Constants (in Watts)
     private static final double HOST_POWER_IDLE = 100;
     private static final double HOST_POWER_FULL = 200;
 
@@ -52,7 +51,6 @@ public class HeuristicSimulation {
             List<Cloudlet> newList = broker.getCloudletReceivedList();
             printCloudletList(newList);
 
-            // ADDED: Call to our custom energy calculation method
             calculateAndPrintEnergy(hostList, lastClock);
 
             CloudSim.stopSimulation();
@@ -83,20 +81,18 @@ public class HeuristicSimulation {
             new Host(1, new RamProvisionerSimple(4096), new BwProvisionerSimple(5000), 500000, peList2, new VmSchedulerTimeShared(peList2))
         );
 
-        // ... the rest of the method remains the same
+     
         DatacenterCharacteristics characteristics = new DatacenterCharacteristics(
                 "x86", "Linux", "Xen", hostList, 10.0, 3.0, 0.05, 0.001, 0.0);
 
         Datacenter datacenter = null;
         try {
-            // Make sure to use the correct allocation policy for each simulation file
             datacenter = new Datacenter(name, characteristics, new VmAllocationPolicySimple(hostList), new LinkedList<Storage>(), 0);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return datacenter;
     }
-    // ADDED: NEW CUSTOM ENERGY CALCULATION METHOD
     private static void calculateAndPrintEnergy(List<Host> hostList, double simulationTime) {
         double totalEnergyKWh = 0;
         for (Host host : hostList) {
@@ -111,7 +107,7 @@ public class HeuristicSimulation {
         Log.printLine(String.format("Total Energy Consumption for all hosts: %.4f kWh", totalEnergyKWh));
     }
 
-    // (The other helper methods like createBroker, createVmList, etc. are the same)
+    
     private static List<Vm> createVmList(int brokerId) {
         List<Vm> list = new ArrayList<>();
         for (int i = 0; i < NUM_VMS; i++) {
@@ -134,7 +130,7 @@ public class HeuristicSimulation {
     private static DatacenterBroker createBroker() {
         DatacenterBroker broker = null;
         try {
-            broker = new NonDestroyingBroker("Broker"); // Using the NonDestroyingBroker to get accurate final utilization
+            broker = new NonDestroyingBroker("Broker"); 
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -155,4 +151,5 @@ public class HeuristicSimulation {
             }
         }
     }
+
 }
